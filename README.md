@@ -1,6 +1,35 @@
-# compilar container
+# desarollo compilar container
+docker compose -f docker-compose.dev.yaml exec workspace php artisan key:generate
+docker compose -f docker-compose.dev.yaml run --rm workspace composer install
 docker compose -f docker-compose.dev.yaml up --build
+
+# tenerlo levantado segundo plano
+docker compose -f docker-compose.dev.yaml up -d --build
+
+#  Levanta los servicios
+docker compose -f docker-compose.dev.yaml up -d
+docker compose -f docker-compose.dev.yaml exec workspace php artisan key:generate
+
+# Si quieres confirmar que el contenedor workspace está activo:
+docker compose -f docker-compose.dev.yaml ps
+
+# si el contenedor esta activo puedes ejecutar
+docker compose -f docker-compose.dev.yaml exec workspace php artisan migrate --force
+
+
+# rebuild
+docker compose -f docker-compose.dev.yaml build --no-cache
+
+# produccion
 docker compose -f docker-compose.prod.yaml up --build -d
+
+docker compose -f docker-compose.prod.yaml ps
+
+
+# para produccion no usamos workspace usanmos directamente exec php
+docker compose -f docker-compose.prod.yaml exec php-fpm php artisan migrate
+
+
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 
 <p align="center">
